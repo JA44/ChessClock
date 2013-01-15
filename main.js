@@ -3,8 +3,10 @@ $(function(){
    var Player = Backbone.Model.extend({
        defaults: function() {
 	    return {
-		name	: "Player 1",
-		time    : 1200
+		name		    : "Player 1",
+		time		    : 1200,
+		isCurrent	    : false,
+		currentIntervalId   : null
 	    };
 	},
 	decrementTime: function() {
@@ -13,28 +15,57 @@ $(function(){
 	},
 	isCurrentPlayer: function(is){
 	    if(is){
-		this.set({currentInterval: setInterval(this.decrementTime, 1000, this)});
+		this.set({isCurrent: true});
+		this.set({currentIntervalId: setInterval(this.decrementTime, 1000, this)});
 	    }else{
-		clearInterval( this.get('currentInterval') );
+		this.set({isCurrent: false});
+		clearInterval( this.get('currentIntervalId') );
 	    }
 	}
 	
    });
    
-   var player1 = new Player({name: 'JA1', time:1200});
-   var player1 = new Player({name: 'JA2', time:1200});
-   player1.isCurrentPlayer(true);
+   
+   window.ChessClock = Backbone.Router.extend({
+
+        initialize : function() {
+	    alert('here');
+            var player1 = new Player({name: 'Player 1', time:1200});
+	    var player2 = new Player({name: 'player 2', time:1200});
+	    player1.isCurrentPlayer(true);
+
+
+	    setTimeout(function(){
+		player1.isCurrentPlayer(false);
+		alert(player1.get('time'));
+	    }, 5000);
+
+	    setTimeout(function(){
+		alert(player1.get('time'));
+	    }, 10000);
+        },
+	changePlayer: function(){
+	    
+	}
+    });
+    
+   /* window.MainView = Backbone.View.extend({
+        el : $('#doc-container'),
+        initialize : function() {
+            this.template = _.template($('#doc-template').html());
+        },
+
+        render : function() {
+            var renderedContent = this.template(this.model.toJSON());
+            $(this.el).html(renderedContent);
+            return this;
+        }
+
+    });*/
    
    
-   setTimeout(function(){
-       player1.isCurrentPlayer(false);
-       alert(player1.get('time'));
-   }, 5000);
    
-   setTimeout(function(){
-       alert(player1.get('time'));
-   }, 10000);
-   
+  
    
    
    
