@@ -30,32 +30,13 @@ $(function(){
 	events: {
 	  'click' : 'change'
 	},
-        render : function() {
-            var renderedContent = this.template(this.model.toJSON());
-            $(this.el).html(renderedContent);
-            return this;
-        },
 	change: function(){
 	    alert('change');
 	}
     });
    
  
-    window.Player1View = Backbone.View.extend({
-        el : $('#player1'),
-        initialize : function() {
-            this.template = _.template($('#player-template').html());
-        },
-
-        render : function() {
-            var renderedContent = this.template(this.model.toJSON());
-            $(this.el).html(renderedContent);
-            return this;
-        }
-    });
-    
-    window.Player2View = Backbone.View.extend({
-        el : $('#player2'),
+    window.PlayerView = Backbone.View.extend({
         initialize : function() {
             this.template = _.template($('#player-template').html());
         },
@@ -75,12 +56,12 @@ $(function(){
             var player1 = new Player({name: 'Player 1', time:1200});
 	    var player2 = new Player({name: 'Player 2', time:1200});
 
-	    var player1View = new Player1View({
-		model : player1
+	    var player1View = new PlayerView({
+		model : player1, el: $('#player1')
 	    });
 
-	    var player2View = new Player2View({
-		model : player2
+	    var player2View = new PlayerView({
+		model : player2, el: $('#player2')
 	    });
 
 	    player1View.render();
@@ -91,13 +72,6 @@ $(function(){
 	    
 	}
     });
-
+    //Lancement de l'application
     var App = new ChessClock();	
-   
-   
-   
-  
-   
-   
-   
 });
