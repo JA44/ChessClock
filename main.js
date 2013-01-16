@@ -11,7 +11,7 @@ $(function(){
 	},
 	decrementTime: function() {
 	    var that = arguments.length != 0 ? arguments[0] : this;
-	    that.set({time : that.get('time_remaining') - 1 })
+	    that.set({time_remaining : that.get('time_remaining') - 1 })
 	},
 	isCurrentPlayer: function(is){
 	    if(is){
@@ -21,8 +21,7 @@ $(function(){
 		this.set({currentPlayer: false});
 		clearInterval( this.get('currentIntervalId') );
 	    }
-	}
-	
+	}	
    });
    
    window.MainView = Backbone.View.extend({
@@ -39,9 +38,11 @@ $(function(){
     window.PlayerView = Backbone.View.extend({
         initialize : function() {
             this.template = _.template($('#player-template').html());
+	    this.listenTo(this.model, 'change', this.render);
         },
 
         render : function() {
+	    console.log('player view change');
             var renderedContent = this.template(this.model.toJSON());
             $(this.el).html(renderedContent);
             return this;
@@ -67,8 +68,6 @@ $(function(){
 	    var player2 = new Player({name: 'Player 2', time:1200});
 
 	    players.add([player1, player2]);
-	    player1.isCurrentPlayer(true);
-	    console.dir( players.currentPlayer());
 
 	    var player1View = new PlayerView({
 		model : player1, el: $('#player1')
@@ -78,8 +77,7 @@ $(function(){
 		model : player2, el: $('#player2')
 	    });
 
-	    player1View.render();
-	    player2View.render();
+	    player1.isCurrentPlayer(true);
 
         },
 	changePlayer: function(){
