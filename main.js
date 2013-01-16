@@ -4,14 +4,14 @@ $(function(){
        defaults: function() {
 	    return {
 		name		    : "Player 1",
-		time		    : 1200,
+		time_remaining	    : 1200,
 		isCurrent	    : false,
 		currentIntervalId   : null
 	    };
 	},
 	decrementTime: function() {
 	    var that = arguments.length != 0 ? arguments[0] : this;
-	    that.set({time : that.get('time') - 1 })
+	    that.set({time : that.get('time_remaining') - 1 })
 	},
 	isCurrentPlayer: function(is){
 	    if(is){
@@ -25,34 +25,26 @@ $(function(){
 	
    });
    
-   
-   window.ChessClock = Backbone.Router.extend({
-
-        initialize : function() {
-	    alert('here');
-            var player1 = new Player({name: 'Player 1', time:1200});
-	    var player2 = new Player({name: 'player 2', time:1200});
-	    player1.isCurrentPlayer(true);
-
-
-	    setTimeout(function(){
-		player1.isCurrentPlayer(false);
-		alert(player1.get('time'));
-	    }, 5000);
-
-	    setTimeout(function(){
-		alert(player1.get('time'));
-	    }, 10000);
+   window.MainView = Backbone.View.extend({
+        el : $('#main'),
+	events: {
+	  'click' : 'change'
+	},
+        render : function() {
+            var renderedContent = this.template(this.model.toJSON());
+            $(this.el).html(renderedContent);
+            return this;
         },
-	changePlayer: function(){
-	    
+	change: function(){
+	    alert('change');
 	}
     });
-    
-   /* window.MainView = Backbone.View.extend({
-        el : $('#doc-container'),
+   
+ 
+    window.Player1View = Backbone.View.extend({
+        el : $('#player1'),
         initialize : function() {
-            this.template = _.template($('#doc-template').html());
+            this.template = _.template($('#player-template').html());
         },
 
         render : function() {
@@ -60,8 +52,47 @@ $(function(){
             $(this.el).html(renderedContent);
             return this;
         }
+    });
+    
+    window.Player2View = Backbone.View.extend({
+        el : $('#player2'),
+        initialize : function() {
+            this.template = _.template($('#player-template').html());
+        },
 
-    });*/
+        render : function() {
+            var renderedContent = this.template(this.model.toJSON());
+            $(this.el).html(renderedContent);
+            return this;
+        }
+    });
+    
+
+   window.ChessClock = Backbone.Router.extend({
+
+        initialize : function() {
+	    var main	= new MainView(); 
+            var player1 = new Player({name: 'Player 1', time:1200});
+	    var player2 = new Player({name: 'Player 2', time:1200});
+
+	    var player1View = new Player1View({
+		model : player1
+	    });
+
+	    var player2View = new Player2View({
+		model : player2
+	    });
+
+	    player1View.render();
+	    player2View.render();
+
+        },
+	changePlayer: function(){
+	    
+	}
+    });
+
+    var App = new ChessClock();	
    
    
    

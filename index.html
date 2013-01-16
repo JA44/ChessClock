@@ -10,17 +10,13 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-	 <script type="text/template" id="player1-template">
-	    <div class="clock">
-		<div class="time"><%= player_1_time_remaining%>20:00</div>
-		<div class="name"><%= player_1_name %>JA</div>
-	    </div>
-	 </script>
-	<script type="text/template" id="player2-template">
-	    <div class="clock">
-		<div class="time"><%= player_2_time_remaining%>20:00</div>
-		<div class="name"><%= player_2_name %>JA2</div>
-	    </div>
-	 </script>
+	<script type="text/template" id="player-template">
+	    <div class="time"><%= time_remaining%></div>
+	    <div class="name"><%= name %></div>
+	</script>
+	<div id="main">
+	    <div class="clock" id="player1"></div>
+	    <div class="clock" id="player2"></div>
+	</div>
     </body>
 </html>
