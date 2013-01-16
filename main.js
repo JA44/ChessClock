@@ -5,7 +5,7 @@ $(function(){
 	    return {
 		name		    : "Player 1",
 		time_remaining	    : 1200,
-		isCurrent	    : false,
+		currentPlayer	    : false,
 		currentIntervalId   : null
 	    };
 	},
@@ -15,10 +15,10 @@ $(function(){
 	},
 	isCurrentPlayer: function(is){
 	    if(is){
-		this.set({isCurrent: true});
+		this.set({currentPlayer: true});
 		this.set({currentIntervalId: setInterval(this.decrementTime, 1000, this)});
 	    }else{
-		this.set({isCurrent: false});
+		this.set({currentPlayer: false});
 		clearInterval( this.get('currentIntervalId') );
 	    }
 	}
@@ -48,6 +48,16 @@ $(function(){
         }
     });
     
+    var PlayerList = Backbone.Collection.extend({
+	model : Player,
+	currentPlayer: function(){
+	    return this.filter(function(player){
+		return player.get('currentPlayer');
+	    })
+	}
+    });
+    
+    var players = new PlayerList;
 
    window.ChessClock = Backbone.Router.extend({
 
@@ -55,6 +65,10 @@ $(function(){
 	    var main	= new MainView(); 
             var player1 = new Player({name: 'Player 1', time:1200});
 	    var player2 = new Player({name: 'Player 2', time:1200});
+
+	    players.add([player1, player2]);
+	    player1.isCurrentPlayer(true);
+	    console.dir( players.currentPlayer());
 
 	    var player1View = new PlayerView({
 		model : player1, el: $('#player1')
