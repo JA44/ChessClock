@@ -1,17 +1,23 @@
 $(function(){
-    
    var Player = Backbone.Model.extend({
        defaults: function() {
 	    return {
 		name		    : "Player 1",
 		time_remaining	    : 1200,
 		currentPlayer	    : false,
-		currentIntervalId   : null
+		currentIntervalId   : null,
+		time_remaining_format: '00:20:00'
 	    };
 	},
 	decrementTime: function() {
 	    var that = arguments.length != 0 ? arguments[0] : this;
-	    that.set({time_remaining : that.get('time_remaining') - 1 })
+	    that.set({time_remaining : that.get('time_remaining') - 1 });
+	    that.set({
+		time_remaining_format: utils.date.getFormat(
+		    that.get('time_remaining'), 'HH:MM:SS'
+		)
+	    });
+	    
 	},
 	isCurrentPlayer: function(is){
 	    if(is){
@@ -24,25 +30,32 @@ $(function(){
 	}	
    });
    
-   window.MainView = Backbone.View.extend({
+   MainView = Backbone.View.extend({
         el : $('#main'),
 	events: {
 	  'click' : 'change'
 	},
 	change: function(){
-	    alert('change');
+	    var currentPlayer = players.getPlayerCurrent(true);
+	    if(currentPlayer.length > 0){
+		var notCurrentPlayer = players.getPlayerCurrent(false);
+		currentPlayer[0].isCurrentPlayer(false);
+		notCurrentPlayer[0].isCurrentPlayer(true);
+	    }else{
+		players.at(0).isCurrentPlayer(true);
+	    }
 	}
     });
    
  
-    window.PlayerView = Backbone.View.extend({
+    PlayerView = Backbone.View.extend({
         initialize : function() {
             this.template = _.template($('#player-template').html());
 	    this.listenTo(this.model, 'change', this.render);
+	    this.render();
         },
 
         render : function() {
-	    console.log('player view change');
             var renderedContent = this.template(this.model.toJSON());
             $(this.el).html(renderedContent);
             return this;
@@ -51,38 +64,37 @@ $(function(){
     
     var PlayerList = Backbone.Collection.extend({
 	model : Player,
-	currentPlayer: function(){
+	getPlayerCurrent: function(current){
 	    return this.filter(function(player){
-		return player.get('currentPlayer');
+		if(current){
+		    return player.get('currentPlayer');	
+		}else{
+		    return !player.get('currentPlayer');	
+		}
 	    })
 	}
     });
     
     var players = new PlayerList;
 
-   window.ChessClock = Backbone.Router.extend({
-
+   ChessClock = Backbone.Router.extend({
         initialize : function() {
 	    var main	= new MainView(); 
-            var player1 = new Player({name: 'Player 1', time:1200});
-	    var player2 = new Player({name: 'Player 2', time:1200});
-
-	    players.add([player1, player2]);
+            players.add(
+		new Player({name: 'Player ' + (players.size() + 1), time:1200})
+	    );
+	    players.add(
+		new Player({name: 'Player ' + (players.size() + 1), time:1200})
+	    );
 
 	    var player1View = new PlayerView({
-		model : player1, el: $('#player1')
+		model : players.at(0), el: $('#player1')
 	    });
 
 	    var player2View = new PlayerView({
-		model : player2, el: $('#player2')
+		model : players.at(1), el: $('#player2')
 	    });
-
-	    player1.isCurrentPlayer(true);
-
-        },
-	changePlayer: function(){
-	    
-	}
+        }
     });
     //Lancement de l'application
     var App = new ChessClock();	

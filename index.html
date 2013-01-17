@@ -6,12 +6,13 @@
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="underscore.js"></script>
 	<script type="text/javascript" src="backbone.js"></script>
+	<script type="text/javascript" src="utils.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
 	<script type="text/template" id="player-template">
-	    <div class="time"><%= time_remaining%></div>
+	    <div class="time"><%= time_remaining_format%></div>
 	    <div class="name"><%= name %></div>
 	</script>
 	<div id="main">
