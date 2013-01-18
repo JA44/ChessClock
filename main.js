@@ -33,9 +33,16 @@ $(function(){
    MainView = Backbone.View.extend({
         el : $('#main'),
 	events: {
-	  'click' : 'change'
+		'mouseup' : 'handlerMouseUp',
+		'mousedown' : 'handlerMouseDown'
 	},
-	change: function(){
+	init: function(){
+		players.at(0).isCurrentPlayer(false);
+		players.at(1).isCurrentPlayer(false);
+		players.at(0).set({time_remaining: 1200});
+		players.at(1).set({time_remaining: 1200});
+	},
+	switchPlayer: function(){
 	    var currentPlayer = players.getPlayerCurrent(true);
 	    if(currentPlayer.length > 0){
 		var notCurrentPlayer = players.getPlayerCurrent(false);
@@ -44,7 +51,21 @@ $(function(){
 	    }else{
 		players.at(0).isCurrentPlayer(true);
 	    }
+	},
+	handlerMouseDown: function(){
+		time = new Date().getTime();
+	},
+	handlerMouseUp: function(){
+		var diff= new Date().getTime() - time;
+		if(diff > 2000){
+			//appui long
+			this.init();
+		}else{
+			//appui court
+			this.switchPlayer();
+		}
 	}
+
     });
    
  
@@ -75,6 +96,7 @@ $(function(){
 	}
     });
     
+	var time;
     var players = new PlayerList;
 
    ChessClock = Backbone.Router.extend({
