@@ -33,6 +33,8 @@ $(function(){
    MainView = Backbone.View.extend({
         el : $('#main'),
 	events: {
+		'touchstart' : 'handlerMouseDown',
+		'touchend' : 'handlerMouseUp',
 		'mouseup' : 'handlerMouseUp',
 		'mousedown' : 'handlerMouseDown'
 	},
