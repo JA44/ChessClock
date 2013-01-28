@@ -1,4 +1,15 @@
 $(function(){
+    if(Modernizr.touch){
+	var events = {
+		'touchstart' : 'handlerStart',
+		'touchend' : 'handlerEnd'
+	};
+    }else{
+	var events = {
+		'mouseup' : 'handlerEnd',
+		'mousedown' : 'handlerStart'
+	};
+    }
    var Player = Backbone.Model.extend({
        defaults: function() {
 	    return {
@@ -32,12 +43,7 @@ $(function(){
    
    MainView = Backbone.View.extend({
         el : $('#main'),
-	events: {
-		'touchstart' : 'handlerMouseDown',
-		'touchend' : 'handlerMouseUp',
-		'mouseup' : 'handlerMouseUp',
-		'mousedown' : 'handlerMouseDown'
-	},
+	events: events,
 	init: function(){
 		players.at(0).isCurrentPlayer(false);
 		players.at(1).isCurrentPlayer(false);
@@ -54,12 +60,12 @@ $(function(){
 		players.at(0).isCurrentPlayer(true);
 	    }
 	},
-	handlerMouseDown: function(){
+	handlerStart: function(){
 		time = new Date().getTime();
 	},
-	handlerMouseUp: function(){
+	handlerEnd: function(){
 		var diff= new Date().getTime() - time;
-		if(diff > 2000){
+		if(diff > 2000){	
 			//appui long
 			this.init();
 		}else{
