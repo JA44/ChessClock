@@ -42,7 +42,7 @@ $(function(){
    });
    
    MainView = Backbone.View.extend({
-        el : $('#main'),
+        el : $('body'),
 	events: events,
 	init: function(){
 		players.at(0).isCurrentPlayer(false);
