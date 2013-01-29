@@ -10,7 +10,14 @@ $(function(){
 		'mousedown' : 'handlerStart'
 	};
     }
-    
+   
+   var Params = Backbone.Model.extend({
+       defaults: function() {
+	    return {
+		time_total	    : 1199
+	    };
+	}
+   });
    /*
     * Model Player
     */ 
@@ -18,7 +25,7 @@ $(function(){
        defaults: function() {
 	    return {
 		name		    : "Player 1",
-		time_remaining	    : 1200,
+		time_remaining	    : param.get('time_total'),
 		current		    : false,
 		currentIntervalId   : null
 	    };
@@ -60,15 +67,23 @@ $(function(){
 		players.at(0).setCurrent(true);
 	    }
 	},
+	params: function(){
+	    window.location.href = '#params';
+	},
 	handlerStart: function(){
 		time = new Date().getTime();
 	},
 	handlerEnd: function(){
 		var diff= new Date().getTime() - time;
-		if(diff > 2000){	
+		if(diff >= 8000){	
+			//appui très long => paramètre
+			this.params();
+		}
+		if(diff >= 2000 & diff < 8000){	
 			//appui long
 			this.init();
-		}else{
+		}
+		if(diff < 2000){
 			//appui court
 			this.switchPlayer();
 		}
@@ -113,7 +128,10 @@ $(function(){
      * Router PlayerList
      */
    ChessClock = Backbone.Router.extend({
-        initialize : function() {
+	routes:{
+	    "params": "params"
+	},
+	initialize : function() {
 	    var main	= new MainView(); 
             players.add(
 		new Player({name: 'Player ' + (players.size() + 1), time:1200})
@@ -129,10 +147,15 @@ $(function(){
 	    var player2View = new PlayerView({
 		model : players.at(1), el: $('#player2')
 	    });
-        }
+        },
+	params: function(){
+	    
+	}
     });
     //Lancement de l'application
     var time;
     var players = new PlayerList;
-    var App = new ChessClock();	
+    var param = new Params();
+    var App = new ChessClock();
+    Backbone.history.start();
 });
