@@ -14,7 +14,7 @@
     <body>
 	<script type="text/template" id="player-template">
 	    <div class="name"><%= name %></div>
-	    <div class="time"><%= time_remaining_format%></div>	    
+	    <div class="time"><%  print(utils.date.getFormat( time_remaining, 'HH:MM:SS') ); %></div>	    
 	</script>
         <div class="player" id="player1"></div>
         <div class="player" id="player2"></div>
