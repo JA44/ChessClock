@@ -16,6 +16,12 @@
 	    <div class="name"><%= name %></div>
 	    <div class="time"><%  print(utils.date.getFormat( time_remaining, 'HH:MM:SS') ); %></div>	    
 	</script>
+	<script type="text/template" id="param-template">
+	    <span>Joueur n°1:</span><input type="text" name="player1" id="player1" value="<%= player1 %>"/><br />
+	    <span>Joueur n°2:</span><input type="text" name="player2" id="player2" value="<%= player2 %>"/><br />
+	    <span>Durée:</span><input type="text" name="duration" id="duration" value="<%= duration %>"/><br />
+	</script>
+	<div id="param"></div>
         <div class="player" id="player1"></div>
         <div class="player" id="player2"></div>
     </body>

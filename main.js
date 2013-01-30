@@ -14,7 +14,9 @@ $(function(){
    var Params = Backbone.Model.extend({
        defaults: function() {
 	    return {
-		time_total	    : 1199
+		duration	    : 1199,
+		player1		    : 'Player 1',
+		player2		    : 'Player 2'
 	    };
 	}
    });
@@ -25,7 +27,7 @@ $(function(){
        defaults: function() {
 	    return {
 		name		    : "Player 1",
-		time_remaining	    : param.get('time_total'),
+		time_remaining	    : param.get('duration'),
 		current		    : false,
 		currentIntervalId   : null
 	    };
@@ -91,6 +93,32 @@ $(function(){
 
     });
    
+   /*
+     * View ParamView
+     */
+    ParamView = Backbone.View.extend({
+	events: {
+		'change input' : 'changeValue'
+	},
+        initialize : function() {
+            this.template = _.template($('#param-template').html());
+	    this.listenTo(this.model, 'change', this.render);
+	    this.render();
+        },
+
+        render : function() {
+            var renderedContent = this.template(this.model.toJSON());
+            $(this.el).html(renderedContent);
+	    this.inputP1 = this.$('#player1');
+            return this;
+        },
+	changeValue: function(){
+	    this.model.set({duration: 63});
+	    alert( this.inputP1.val());
+	}
+    });
+   
+   
     /*
      * View PlayerView
      */
@@ -134,10 +162,10 @@ $(function(){
 	initialize : function() {
 	    var main	= new MainView(); 
             players.add(
-		new Player({name: 'Player ' + (players.size() + 1), time:1200})
+		new Player({name: param.get('player1'), time:1200})
 	    );
 	    players.add(
-		new Player({name: 'Player ' + (players.size() + 1), time:1200})
+		new Player({name: param.get('player2'), time:1200})
 	    );
 
 	    var player1View = new PlayerView({
@@ -147,6 +175,11 @@ $(function(){
 	    var player2View = new PlayerView({
 		model : players.at(1), el: $('#player2')
 	    });
+	    
+	    var paramView = new ParamView({
+		model : param, el: $('#param')
+	    })
+	    
         },
 	params: function(){
 	    
