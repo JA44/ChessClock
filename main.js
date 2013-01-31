@@ -70,12 +70,15 @@ $(function(){
 	    }
 	},
 	params: function(){
-	    window.location.href = '#params';
+	    //window.location.href = '#params';
+	    App.params();
 	},
 	handlerStart: function(){
 		time = new Date().getTime();
 	},
 	handlerEnd: function(){
+	    		this.params();
+			return;
 		var diff= new Date().getTime() - time;
 		if(diff >= 8000){	
 			//appui très long => paramètre
@@ -114,7 +117,8 @@ $(function(){
         },
 	changeValue: function(){
 	    this.model.set({duration: 63});
-	    alert( this.inputP1.val());
+	    players.at(0).set({name:'dsqdqs'});
+	    //alert( this.inputP1.val());
 	}
     });
    
@@ -176,13 +180,14 @@ $(function(){
 		model : players.at(1), el: $('#player2')
 	    });
 	    
-	    var paramView = new ParamView({
+	    this.paramView = new ParamView({
 		model : param, el: $('#param')
 	    })
 	    
         },
 	params: function(){
 	    
+	    $('#myModal').modal('show');
 	}
     });
     //Lancement de l'application
