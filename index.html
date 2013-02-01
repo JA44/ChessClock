@@ -15,6 +15,8 @@
     </head>
     <body>
 	<script type="text/template" id="player-template">
+	    <div class="name">&nbsp;</div>
+	    <div class="name">&nbsp;</div>
 	    <div class="name"><%= name %></div>
 	    <div class="time"><%  print(utils.date.getFormat( time_remaining, 'HH:MM:SS') ); %></div>	    
 	</script>
@@ -29,25 +31,52 @@
 		    <div class="control-group">
 			<label class="control-label" for="player1"><b>Joueur n°1 :</b></label>
 			<div class="controls">
-			    <input type="text" name="player1" id="player1" value="<%= player1 %>"/>
+			     <div class="input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span>
+				<input type="text" name="player1" id="player1" value="<%= player1 %>"/>
+			     </div>
 			</div>
 		    </div>
 		    <div class="control-group">
 			<label class="control-label" for="player2"><b>Joueur n°2 :</b></label>
 			<div class="controls">
-			    <input type="text" name="player2" id="player2" value="<%= player2 %>"/>
+			    <div class="input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span>
+				<input type="text" name="player2" id="player2" value="<%= player2 %>"/>
+			    </div>
 			</div>
 		    </div>
 		    <div class="control-group">
 			<label class="control-label" for="duration"><b>Durée :</b></label>
 			<div class="controls">
-			    <input type="text" name="duration" id="duration" value="<%= duration %>"/>
+			    <div class="input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span>
+				<input type="text" name="duration" id="duration" value="<%= duration %>"/>
+			    </div>
 			</div>
 		    </div>
 		</form>
 	    </div>
 	</script>
-	<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	    <div class="navbar-inner">
+		<div class="container">
+		    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		    </a>
+		    <a class="brand span1" href="#">XX</a>
+		    
+		    <div class="span1 offset8 btn-group">
+			<a class="btn" href="#"><i class="icon-pause"></i></a>
+			<a class="btn" href="#"><i class="icon-play"></i></a>
+			<a class="btn" href="#"><i class="icon-stop"></i></a>
+			<a class="btn" href="#"><i class="icon-wrench"></i></a>
+		    </div>
+		</div>
+	    </div>
+	</div>
         <div class="player" id="player1"></div>
         <div class="player" id="player2"></div>
 	<div id="param"></div>
