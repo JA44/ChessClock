@@ -153,6 +153,11 @@ $(function(){
         render : function() {
             var renderedContent = this.template(this.model.toJSON());
             $(this.el).html(renderedContent);
+	    if( this.model.get('current') ){
+		$(this.el).addClass('current');
+	    }else{
+		$(this.el).removeClass('current');
+	    }
             return this;
         }
     });

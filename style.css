@@ -7,6 +7,8 @@ body{
   border:0;
 }
 .player{	
+    color: #d14;
+    font-weight: bold;
     position:absolute;
     width:50%;
     height:100%;
@@ -24,6 +26,11 @@ body{
 .name{
     text-align: center;
     vertical-align:middle;
+}
+
+.current{
+    color: #51a351;
+    font-weight: bold;
 }
 
 .time{
