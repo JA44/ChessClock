@@ -32,7 +32,7 @@
 			<label class="control-label" for="player1"><b>Joueur n°1 :</b></label>
 			<div class="controls">
 			     <div class="input-prepend">
-				<span class="add-on"><i class="icon-envelope"></i></span>
+				<span class="add-on"><i class="icon-user"></i></span>
 				<input type="text" name="player1" id="player1" value="<%= player1 %>"/>
 			     </div>
 			</div>
@@ -41,7 +41,7 @@
 			<label class="control-label" for="player2"><b>Joueur n°2 :</b></label>
 			<div class="controls">
 			    <div class="input-prepend">
-				<span class="add-on"><i class="icon-envelope"></i></span>
+				<span class="add-on"><i class="icon-user"></i></span>
 				<input type="text" name="player2" id="player2" value="<%= player2 %>"/>
 			    </div>
 			</div>
@@ -50,7 +50,7 @@
 			<label class="control-label" for="duration"><b>Durée :</b></label>
 			<div class="controls">
 			    <div class="input-prepend">
-				<span class="add-on"><i class="icon-envelope"></i></span>
+				<span class="add-on"><i class="icon-time"></i></span>
 				<input type="text" name="duration" id="duration" value="<%= duration %>"/>
 			    </div>
 			</div>
@@ -69,10 +69,11 @@
 		    <a class="brand span1" href="#">XX</a>
 		    
 		    <div class="span1 offset8 btn-group">
-			<a class="btn" href="#"><i class="icon-pause"></i></a>
-			<a class="btn" href="#"><i class="icon-play"></i></a>
-			<a class="btn" href="#"><i class="icon-stop"></i></a>
-			<a class="btn" href="#"><i class="icon-wrench"></i></a>
+			<a id="switch" class="btn" href="#"><i class="icon-user"></i></a>
+			<a id="pause" class="btn" href="#"><i class="icon-pause"></i></a>
+			<a id="play" class="btn" href="#"><i class="icon-play"></i></a>
+			<a id="stop" class="btn" href="#"><i class="icon-stop"></i></a>
+			<a id="config" class="btn" href="#"><i class="icon-wrench"></i></a>
 		    </div>
 		</div>
 	    </div>

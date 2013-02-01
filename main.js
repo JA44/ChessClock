@@ -52,7 +52,14 @@ $(function(){
     */ 
    MainView = Backbone.View.extend({
         el : $('body'),
-	events: events,
+	//events: events,
+	events: {
+	   'click #switch' :  'switchPlayer',
+	   'click #config' :  'params',
+	   'click #pause'  :  'pause',
+	   'click #play'  :  'play',
+	   'click #stop'  :  'stop'
+	},
 	init: function(){
 		players.at(0).setCurrent(false);
 		players.at(1).setCurrent(false);
@@ -69,10 +76,20 @@ $(function(){
 		players.at(0).setCurrent(true);
 	    }
 	},
+	play: function(){
+	    
+	},
+	stop: function(){
+	    this.init();
+	},
+	pause: function(){
+	    
+	},
 	params: function(){
 	    //window.location.href = '#params';
 	    App.params();
 	},
+	//TODO: delete si pas utiliser
 	handlerStart: function(){
 		time = new Date().getTime();
 	},
