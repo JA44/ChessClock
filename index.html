@@ -3,7 +3,6 @@
     <head>
 	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	
 	<script type="text/javascript" src="modernizr.js"></script>
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="underscore.js"></script>
@@ -12,6 +11,14 @@
 	<script type="text/javascript" src="main.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href="bootstrap.min.css" rel="stylesheet">
+	<style>
+	    .right{
+		float:right;
+	    }
+	    .center{
+		text-align: center;
+	    }
+	</style>
     </head>
     <body>
 	<script type="text/template" id="player-template">
@@ -60,15 +67,9 @@
 	</script>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 	    <div class="navbar-inner">
-		<div class="container">
-		    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		    </a>
+		<div class="container-fluid">
 		    <a class="brand span1" href="#">XX</a>
-		    
-		    <div class="span1 offset8 btn-group">
+		    <div class="btn-group right">
 			<a id="switch" class="btn" href="#"><i class="icon-user"></i></a>
 			<a id="pause" class="btn" href="#"><i class="icon-pause"></i></a>
 			<a id="play" class="btn" href="#"><i class="icon-play"></i></a>
@@ -81,6 +82,11 @@
         <div class="player" id="player1"></div>
         <div class="player" id="player2"></div>
 	<div id="param"></div>
+	<div class="navbar navbar-inverse navbar-fixed-bottom">
+	    <div class="navbar-inner">
+		<div class="container-fluid center">2013 © Jean-Alain Ré </div>
+	    </div>
+	</div>
 	<script src="bootstrap.min.js"></script>
     </body>
 </html>
