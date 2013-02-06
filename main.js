@@ -14,7 +14,7 @@ $(function(){
    var Params = Backbone.Model.extend({
        defaults: function() {
 	    return {
-		duration	    : 1199,
+		duration	    : 1000,
 		player1		    : 'Player 1',
 		player2		    : 'Player 2'
 	    };
@@ -26,7 +26,7 @@ $(function(){
    var Player = Backbone.Model.extend({
        defaults: function() {
 	    return {
-		name		    : "Player 1",
+		name		    : "",
 		time_remaining	    : param.get('duration'),
 		current		    : false,
 		currentIntervalId   : null
@@ -57,6 +57,19 @@ $(function(){
 	}	
    });
    
+   StatePlayView = Backbone.View.extend({
+       el : $('body'),
+       setStatePlay : function(state){
+	   if(state){ //lecture
+		$(this.el).find('#play-pause i').removeClass('icon-play');
+		$(this.el).find('#play-pause i').addClass('icon-pause');
+	   }else{
+		$(this.el).find('#play-pause i').removeClass('icon-pause');
+		$(this.el).find('#play-pause i').addClass('icon-play');
+	   }
+       }
+   });
+   
    /*
     * View MainView
     */ 
@@ -72,14 +85,14 @@ $(function(){
 	init: function(){
 		players.at(0).setCurrent(false);
 		players.at(1).setCurrent(false);
-		players.at(0).set({time_remaining: 1200});
-		players.at(1).set({time_remaining: 1200});
+		players.at(0).set({time_remaining: param.get('duration')});
+		players.at(1).set({time_remaining: param.get('duration')});
+	},
+	changeState: function(){
+	    
 	},
 	switchPlayer: function(){
-	    
-	    
-	    $(this.el).find('#play-pause i').removeClass('icon-play');
-	    $(this.el).find('#play-pause i').addClass('icon-pause');
+	    statePlay.setStatePlay(true);
 	    var currentPlayer = players.getCurrent(true);
 	    if(currentPlayer.length > 0){
 		var notCurrentPlayer = players.getCurrent(false);
@@ -97,29 +110,24 @@ $(function(){
 	    }
 	},
 	stop: function(){
-	    //TODO : create view PlayPause doit gérér l'état'
-	    $(this.el).find('#play-pause i').removeClass('icon-pause');
-	    $(this.el).find('#play-pause i').addClass('icon-play');
+	    statePlay.setStatePlay(false);
 	    this.init();
 	},
 	pause: function(){
-	    $(this.el).find('#play-pause i').removeClass('icon-pause');
-	    $(this.el).find('#play-pause i').addClass('icon-play');
+	    statePlay.setStatePlay(false);
 	    players.at(0).stop();
 	    players.at(1).stop();
 	},
 	play: function(){
-	    $(this.el).find('#play-pause i').removeClass('icon-play');
-	    $(this.el).find('#play-pause i').addClass('icon-pause');
+	    statePlay.setStatePlay(true);
 	    var currentPlayer = players.getCurrent(true);
 	    if(currentPlayer.length === 0){
-
+		this.switchPlayer();
 	    }else{
 		currentPlayer[0].play();
 	    }
 	},
 	params: function(){
-	    //window.location.href = '#params';
 	    App.params();
 	},
 	//TODO: delete si pas utiliser
@@ -151,28 +159,25 @@ $(function(){
      */
     ParamView = Backbone.View.extend({
 	events: {
-		//'change input' : 'changeValue'
-		//TODO onclose
+		'hidden' : 'changeValue'
 	},
         initialize : function() {
             this.template = _.template($('#param-template').html());
-	    this.listenTo(this.model, 'change', this.render);
 	    this.render();
-	    /*$('#myModal').on('hidden', function () {
-		this.changeValue();
-	      })*/
         },
 
         render : function() {
             var renderedContent = this.template(this.model.toJSON());
-            $(this.el).html(renderedContent);
-	    this.inputP1 = this.$('#player1');
+            $(this.el).append(renderedContent);
+	    this.fieldPlayer1 = this.$('#fieldPlayer1');
+	    this.fieldPlayer2 = this.$('#fieldPlayer2');
+	    this.fieldDuration = this.$('#fieldDuration');
             return this;
         },
 	changeValue: function(){
-	    this.model.set({duration: 63});
-	    players.at(0).set({name:'dsqdqs'});
-	    //alert( this.inputP1.val());
+	    players.at(0).set({name:this.fieldPlayer1.val()});
+	    players.at(1).set({name:this.fieldPlayer2.val()});
+	    this.model.set({duration: this.fieldDuration.val()});
 	}
     });
    
@@ -231,10 +236,10 @@ $(function(){
 	initialize : function() {
 	    var main	= new MainView(); 
             players.add(
-		new Player({name: param.get('player1'), time:1200})
+		new Player({name: param.get('player1'), time:param.get('duration')})
 	    );
 	    players.add(
-		new Player({name: param.get('player2'), time:1200})
+		new Player({name: param.get('player2'), time:param.get('duration')})
 	    );
 
 	    var player1View = new PlayerView({
@@ -246,17 +251,18 @@ $(function(){
 	    });
 	    
 	    this.paramView = new ParamView({
-		model : param, el: $('#param')
+		model : param, el: $('body')
 	    })
 	    
+	    statePlay = new StatePlayView();
         },
 	params: function(){
-	    
 	    $('#myModal').modal('show');
 	}
     });
     //Lancement de l'application
     var time;
+    var statePlay;
     var players = new PlayerList;
     var param = new Params();
     var App = new ChessClock();
