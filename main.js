@@ -1,14 +1,20 @@
 $(function(){
+    var events = {
+	'click #switch'	:  'switchPlayer',
+	'click #config'	:  'params',
+	'click #play-pause'  :  'playOrPause',
+	'click #stop'	:  'stop',
+    };
     if(Modernizr.touch){
-	var events = {
-		'touchstart' : 'handlerStart',
-		'touchend' : 'handlerEnd'
-	};
+	$.extend(events, {
+		'touchstart #control' : 'handlerStart',
+		'touchend #control' : 'handlerEnd'
+	});
     }else{
-	var events = {
-		'mouseup' : 'handlerEnd',
-		'mousedown' : 'handlerStart'
-	};
+	$.extend(events, {
+		'mouseup #control' : 'handlerEnd',
+		'mousedown #control' : 'handlerStart'
+	});
     }
    
    var Params = Backbone.Model.extend({
@@ -75,15 +81,7 @@ $(function(){
     */ 
    MainView = Backbone.View.extend({
         el : $('body'),
-	//events: events,
-	events: {
-	   'click #switch'	:  'switchPlayer',
-	   'click #config'	:  'params',
-	   'click #play-pause'  :  'playOrPause',
-	   'click #stop'	:  'stop',
-	   'mouseup #control'	: 'handlerEnd',
-	   'mousedown #control'	: 'handlerStart'
-	},
+	events: events,
 	initialize: function(){
 	    //positionne l
 	    $('#control').css({
@@ -136,7 +134,6 @@ $(function(){
 	params: function(){
 	    App.params();
 	},
-	//TODO: delete si pas utiliser
 	handlerStart: function(){
 		time = new Date().getTime();
 	},
