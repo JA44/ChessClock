@@ -7,26 +7,21 @@ body{
   border:0;
 }
 .player{	
-    font-size: 24px;
+    top: 40%;
+    font-size: 36px;
     color: #d14;
     font-weight: bold;
     position:absolute;
     width:50%;
-    height:100%;
     display:inline-block;
     text-align: center;
-    background-color:#CCC;
     margin: 0;
+    line-height: 36px;
     
 }
 
 #player2{
     left:50%;
-}
-
-.name{
-    text-align: center;
-    vertical-align:middle;
 }
 
 .current{
