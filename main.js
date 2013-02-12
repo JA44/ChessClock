@@ -80,16 +80,22 @@ $(function(){
 	   'click #switch'	:  'switchPlayer',
 	   'click #config'	:  'params',
 	   'click #play-pause'  :  'playOrPause',
-	   'click #stop'	:  'stop'
+	   'click #stop'	:  'stop',
+	   'mouseup #control'	: 'handlerEnd',
+	   'mousedown #control'	: 'handlerStart'
+	},
+	initialize: function(){
+	    //positionne l
+	    $('#control').css({
+		'top':$('#header').height() + 'px',
+		'height':($('#footer').offset().top - $('#header').height()) + 'px'
+	    });
 	},
 	init: function(){
 		players.at(0).setCurrent(false);
 		players.at(1).setCurrent(false);
 		players.at(0).set({time_remaining: param.get('duration')});
-		players.at(1).set({time_remaining: param.get('duration')});
-	},
-	changeState: function(){
-	    
+		players.at(1).set({time_remaining: param.get('duration')});	
 	},
 	switchPlayer: function(){
 	    statePlay.setStatePlay(true);
@@ -135,17 +141,7 @@ $(function(){
 		time = new Date().getTime();
 	},
 	handlerEnd: function(){
-	    		this.params();
-			return;
 		var diff= new Date().getTime() - time;
-		if(diff >= 8000){	
-			//appui très long => paramètre
-			this.params();
-		}
-		if(diff >= 2000 & diff < 8000){	
-			//appui long
-			this.init();
-		}
 		if(diff < 2000){
 			//appui court
 			this.switchPlayer();

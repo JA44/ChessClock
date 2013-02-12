@@ -32,3 +32,8 @@ body{
 .time{
     vertical-align:middle;
 }
+
+#control{
+    position: absolute;
+    width: 100%;
+}
