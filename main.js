@@ -40,7 +40,7 @@ $(function(){
 	},
 	decrementTime: function() {
 	    var that = arguments.length != 0 ? arguments[0] : this;
-	    that.set({time_remaining : that.get('time_remaining') - 1 });
+	    that.save({time_remaining : that.get('time_remaining') - 1 });
 	},
 	play: function(){
 	    this.set({currentIntervalId: setInterval(this.decrementTime, 1000, this)});
@@ -168,8 +168,8 @@ $(function(){
             return this;
         },
 	changeValue: function(){
-	    players.at(0).set({name:this.fieldPlayer1.val()});
-	    players.at(1).set({name:this.fieldPlayer2.val()});
+	    players.at(0).save({name:this.fieldPlayer1.val()});
+	    players.at(1).save({name:this.fieldPlayer2.val()});
 	    this.model.set({duration: this.fieldDuration.val()});
 	}
     });
@@ -202,6 +202,7 @@ $(function(){
      */
     var PlayerList = Backbone.Collection.extend({
 	model : Player,
+	localStorage: new Backbone.LocalStorage("players"),
 	getCurrent: function(current){
 	    return this.filter(function(player){
 		if(current){
@@ -228,13 +229,16 @@ $(function(){
 	},
 	initialize : function() {
 	    var main	= new MainView(); 
-            players.add(
-		new Player({name: param.get('player1'), time:param.get('duration')})
-	    );
-	    players.add(
-		new Player({name: param.get('player2'), time:param.get('duration')})
-	    );
-
+	    players.fetch();
+	    
+	    if(players.length !== 2){
+		players.create({name: param.get('player1'), time:param.get('duration')});
+		players.create({name: param.get('player2'), time:param.get('duration')});
+	    }
+	    
+	    //TODO : check state current model
+	    //TODO : localstorage to param
+	    
 	    var player1View = new PlayerView({
 		model : players.at(0), el: $('#player1')
 	    });
