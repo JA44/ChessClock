@@ -234,13 +234,12 @@ $(function(){
 	initialize : function() {
 	    var main	= new MainView(); 
 	    players.fetch();
-	    
 	    if(players.length !== 2){
 		players.create({name: param.get('player1'), time:param.get('duration')});
 		players.create({name: param.get('player2'), time:param.get('duration')});
 	    }else{
-		players.at(0).set({current: false});
-		players.at(1).set({current: false});
+		players.at(0).set({current: false, currentIntervalId:null});
+		players.at(1).set({current: false, currentIntervalId: null});
 	    }
 	    
 	    var player1View = new PlayerView({
