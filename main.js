@@ -1,4 +1,4 @@
-$(function(){
+$(function(){ 
     var events = {
 	'click #switch'	:  'switchPlayer',
 	'click #config'	:  'params',
@@ -18,8 +18,10 @@ $(function(){
     }
    
    var Params = Backbone.Model.extend({
+       localStorage: new Backbone.LocalStorage("params"),
        defaults: function() {
 	    return {
+		id		    : 1,
 		duration	    : 1000,
 		player1		    : 'Player 1',
 		player2		    : 'Player 2'
@@ -168,9 +170,11 @@ $(function(){
             return this;
         },
 	changeValue: function(){
+	    this.model.save({player1: this.fieldPlayer1.val()});
+	    this.model.save({player2: this.fieldPlayer2.val()});
 	    players.at(0).save({name:this.fieldPlayer1.val()});
 	    players.at(1).save({name:this.fieldPlayer2.val()});
-	    this.model.set({duration: this.fieldDuration.val()});
+	    this.model.save({duration: this.fieldDuration.val()});
 	}
     });
    
@@ -234,10 +238,10 @@ $(function(){
 	    if(players.length !== 2){
 		players.create({name: param.get('player1'), time:param.get('duration')});
 		players.create({name: param.get('player2'), time:param.get('duration')});
+	    }else{
+		players.at(0).set({current: false});
+		players.at(1).set({current: false});
 	    }
-	    
-	    //TODO : check state current model
-	    //TODO : localstorage to param
 	    
 	    var player1View = new PlayerView({
 		model : players.at(0), el: $('#player1')
@@ -261,7 +265,12 @@ $(function(){
     var time;
     var statePlay;
     var players = new PlayerList;
-    var param = new Params();
+
+    var param = new Params({id:1});
+    //need error callback else error javascript
+    param.fetch({
+	error: function(){}
+    });
     var App = new ChessClock();
     Backbone.history.start();
 });
