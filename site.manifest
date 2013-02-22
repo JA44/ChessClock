@@ -1,7 +1,8 @@
 CACHE MANIFEST
  
 # Version 0.1
- 
+
+backbone-localstorage.js 
 backbone.js
 bootstrap.min.css
 bootstrap.min.js
